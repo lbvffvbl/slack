@@ -178,7 +178,6 @@ func NewConfirmationBlockObject(title, text, confirm, deny *TextBlockObject) *Co
 type OptionBlockObject struct {
 	Text  *TextBlockObject `json:"text"`
 	Value string           `json:"value"`
-	URL   string           `json:"url"`
 }
 
 // NewOptionBlockObject returns an instance of a new Option Block Element
