@@ -6,11 +6,15 @@ import (
 	"strings"
 )
 
+type UpdateViewTrigger struct {
+	TriggerID string      `json:"trigger_id"` //Required. Must respond within 3 seconds.
+	View      ViewPayload `json:"view"`       //Required.
+	ViewId    string      `json:"view_id"`
+}
 type ViewTrigger struct {
 	TriggerID string      `json:"trigger_id"` //Required. Must respond within 3 seconds.
 	View      ViewPayload `json:"view"`       //Required.
 }
-
 type ViewPayload struct {
 	Type       string          `json:"type"`
 	Title      TextBlockObject `json:"title"`
@@ -43,23 +47,47 @@ func (api *Client) OpenView(triggerID string, viewPayload ViewPayload) (err erro
 // OpenViewgContext opens a dialog window where the triggerId originated from with a custom context
 // EXPERIMENTAL: view functionality is currently experimental, api is not considered stable.
 func (api *Client) OpenViewContext(ctx context.Context, triggerID string, viewPayload ViewPayload) (err error) {
+	return api.ViewContext(ctx, triggerID, viewPayload, "views.open", "")
+}
+func (api *Client) UpdateViewContext(ctx context.Context, triggerID string, viewPayload ViewPayload, viewId string) (err error) {
+	return api.ViewContext(ctx, triggerID, viewPayload, "views.update", viewId)
+}
+
+func (api *Client) PushViewContext(ctx context.Context, triggerID string, viewPayload ViewPayload) (err error) {
+	return api.ViewContext(ctx, triggerID, viewPayload, "views.push", "")
+}
+
+func (api *Client) ViewContext(ctx context.Context, triggerID string, viewPayload ViewPayload, action string, viewId string) (err error) {
 	if triggerID == "" {
 		return ErrParametersMissing
 	}
-
-	req := ViewTrigger{
-		TriggerID: triggerID,
-		View:      viewPayload,
+	encoded := []byte{}
+	switch action {
+	case "views.open", "views.push":
+		req := ViewTrigger{
+			TriggerID: triggerID,
+			View:      viewPayload,
+		}
+		encoded, err = json.Marshal(req)
+	case "views.update":
+		req := UpdateViewTrigger{
+			TriggerID: triggerID,
+			View:      viewPayload,
+			ViewId:    viewId,
+		}
+		encoded, err = json.Marshal(req)
 	}
 
-	encoded, err := json.Marshal(req)
 	if err != nil {
 		return err
 	}
+	//fmt.Println(string(encoded))
 
 	response := &ViewOpenResponse{}
-	endpoint := api.endpoint + "dialog.open"
+
+	endpoint := api.endpoint + "views.open"
 	if err := postJSON(ctx, api.httpclient, endpoint, api.token, encoded, response, api); err != nil {
+
 		return err
 	}
 
