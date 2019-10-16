@@ -14,6 +14,7 @@ const (
 	MBTImage   MessageBlockType = "image"
 	MBTAction  MessageBlockType = "actions"
 	MBTContext MessageBlockType = "context"
+	MBTInput   MessageBlockType = "input"
 )
 
 // Block defines an interface all block types should implement
@@ -30,22 +31,22 @@ type Blocks struct {
 
 // BlockAction is the action callback sent when a block is interacted with
 type BlockAction struct {
-	ActionID             string            `json:"action_id"`
-	BlockID              string            `json:"block_id"`
-	Type                 actionType        `json:"type"`
-	Text                 TextBlockObject   `json:"text"`
-	Value                string            `json:"value"`
-	ActionTs             string            `json:"action_ts"`
+	ActionID             string               `json:"action_id"`
+	BlockID              string               `json:"block_id"`
+	Type                 actionType           `json:"type"`
+	Text                 TextBlockObject      `json:"text"`
+	Value                string               `json:"value"`
+	ActionTs             string               `json:"action_ts"`
 	SelectedOptions      []*OptionBlockObject `json:"selected_options"`
-	SelectedUser         string            `json:"selected_user"`
-	SelectedChannel      string            `json:"selected_channel"`
-	SelectedConversation string            `json:"selected_conversation"`
-	SelectedDate         string            `json:"selected_date"`
-	InitialOption        OptionBlockObject `json:"initial_option"`
-	InitialUser          string            `json:"initial_user"`
-	InitialChannel       string            `json:"initial_channel"`
-	InitialConversation  string            `json:"initial_conversation"`
-	InitialDate          string            `json:"initial_date"`
+	SelectedUser         string               `json:"selected_user"`
+	SelectedChannel      string               `json:"selected_channel"`
+	SelectedConversation string               `json:"selected_conversation"`
+	SelectedDate         string               `json:"selected_date"`
+	InitialOption        OptionBlockObject    `json:"initial_option"`
+	InitialUser          string               `json:"initial_user"`
+	InitialChannel       string               `json:"initial_channel"`
+	InitialConversation  string               `json:"initial_conversation"`
+	InitialDate          string               `json:"initial_date"`
 }
 
 // actionType returns the type of the action

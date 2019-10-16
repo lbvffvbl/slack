@@ -7,11 +7,13 @@ const (
 	METButton     MessageElementType = "button"
 	METOverflow   MessageElementType = "overflow"
 	METDatepicker MessageElementType = "datepicker"
+	METInput      MessageElementType = "plain_text_input"
 
 	MixedElementImage MixedElementType = "mixed_image"
 	MixedElementText  MixedElementType = "mixed_text"
 
 	OptTypeStatic        string = "static_select"
+	OptTypeMultiStatic   string = "multi_static_select"
 	OptTypeExternal      string = "external_select"
 	OptTypeUser          string = "users_select"
 	OptTypeConversations string = "conversations_select"
@@ -36,6 +38,7 @@ type Accessory struct {
 	OverflowElement   *OverflowBlockElement
 	DatePickerElement *DatePickerBlockElement
 	SelectElement     *SelectBlockElement
+	InputElement      *InputBlockElement
 }
 
 // NewAccessory returns a new Accessory for a given block element
@@ -51,6 +54,8 @@ func NewAccessory(element BlockElement) *Accessory {
 		return &Accessory{DatePickerElement: element.(*DatePickerBlockElement)}
 	case *SelectBlockElement:
 		return &Accessory{SelectElement: element.(*SelectBlockElement)}
+	case *InputBlockElement:
+		return &Accessory{InputElement: element.(*InputBlockElement)}
 	}
 
 	return nil
@@ -235,4 +240,24 @@ func NewDatePickerBlockElement(actionID string) *DatePickerBlockElement {
 		Type:     METDatepicker,
 		ActionID: actionID,
 	}
+}
+
+type InputBlockElement struct {
+	Type        MessageElementType `json:"type"`
+	ActionID    string             `json:"action_id"`
+	Placeholder *TextBlockObject   `json:"placeholder,omitempty"`
+	Multiline   bool               `json:"multiline,omitempty"`
+}
+
+func (s InputBlockElement) ElementType() MessageElementType {
+	return MessageElementType(s.Type)
+}
+
+func NewInputBlockElement(actionId string, multiline bool) *InputBlockElement {
+	return &InputBlockElement{
+		Type:      METInput,
+		ActionID:  actionId,
+		Multiline: multiline,
+	}
+
 }

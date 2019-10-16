@@ -7,9 +7,8 @@ import (
 )
 
 type UpdateViewTrigger struct {
-	TriggerID string      `json:"trigger_id"` //Required. Must respond within 3 seconds.
-	View      ViewPayload `json:"view"`       //Required.
-	ViewId    string      `json:"view_id"`
+	View   ViewPayload `json:"view"` //Required.
+	ViewId string      `json:"view_id"`
 }
 type ViewTrigger struct {
 	TriggerID string      `json:"trigger_id"` //Required. Must respond within 3 seconds.
@@ -17,8 +16,13 @@ type ViewTrigger struct {
 }
 
 type ViewPayloadCallback struct {
-	ViewPayload
-	Id string `json:"id"`
+	Type       string          `json:"type"`
+	Title      TextBlockObject `json:"title"`
+	Blocks     Blocks          //    `json:"blocks"`
+	Close      TextBlockObject `json:"close"`
+	Submit     TextBlockObject `json:"submit"`
+	CallbackId string          `json:"callback_id"`
+	Id         string          `json:"id"`
 }
 
 type ViewPayload struct {
@@ -77,9 +81,8 @@ func (api *Client) ViewContext(ctx context.Context, triggerID string, viewPayloa
 		encoded, err = json.Marshal(req)
 	case "views.update":
 		req := UpdateViewTrigger{
-			TriggerID: triggerID,
-			View:      viewPayload,
-			ViewId:    viewId,
+			View:   viewPayload,
+			ViewId: viewId,
 		}
 		encoded, err = json.Marshal(req)
 	}
@@ -91,7 +94,7 @@ func (api *Client) ViewContext(ctx context.Context, triggerID string, viewPayloa
 
 	response := &ViewOpenResponse{}
 
-	endpoint := api.endpoint + "views.open"
+	endpoint := api.endpoint + action
 	if err := postJSON(ctx, api.httpclient, endpoint, api.token, encoded, response, api); err != nil {
 
 		return err

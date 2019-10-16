@@ -124,7 +124,7 @@ func (b *BlockElements) UnmarshalJSON(data []byte) error {
 			blockElement = &OverflowBlockElement{}
 		case "datepicker":
 			blockElement = &DatePickerBlockElement{}
-		case "static_select", "external_select", "users_select", "conversations_select", "channels_select":
+		case "static_select", "multi_static_select", "external_select", "users_select", "conversations_select", "channels_select":
 			blockElement = &SelectBlockElement{}
 		default:
 			return errors.New("unsupported block element type")
@@ -203,7 +203,7 @@ func (a *Accessory) UnmarshalJSON(data []byte) error {
 			return err
 		}
 		a.DatePickerElement = element.(*DatePickerBlockElement)
-	case "static_select":
+	case "static_select", "multi_static_select":
 		element, err := unmarshalBlockElement(r, &SelectBlockElement{})
 		if err != nil {
 			return err
