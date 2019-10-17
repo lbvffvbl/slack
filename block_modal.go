@@ -25,6 +25,17 @@ type ViewPayloadCallback struct {
 	Id         string          `json:"id"`
 }
 
+type Value struct {
+	Type  string `json:"type"`
+	Value string `json:"value"`
+}
+
+type Values map[string]map[string]Value
+
+type ViewState struct {
+	Values Values `json:"values,omitempty"`
+}
+
 type ViewPayload struct {
 	Type       string          `json:"type"`
 	Title      TextBlockObject `json:"title"`
@@ -32,6 +43,8 @@ type ViewPayload struct {
 	Close      TextBlockObject `json:"close"`
 	Submit     TextBlockObject `json:"submit"`
 	CallbackId string          `json:"callback_id"`
+	Id         string          `json:"id,omitempty"`
+	State      ViewState       `json:"state,omitempty"`
 }
 
 // DialogCallback DEPRECATED use InteractionCallback
