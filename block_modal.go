@@ -44,8 +44,6 @@ type ViewPayload struct {
 	Close      TextBlockObject `json:"close"`
 	Submit     TextBlockObject `json:"submit"`
 	CallbackId string          `json:"callback_id"`
-	Id         string          `json:"id,omitempty"`
-	State      ViewState       `json:"state,omitempty"`
 }
 
 // DialogCallback DEPRECATED use InteractionCallback
