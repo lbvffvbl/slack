@@ -38,6 +38,7 @@ type BlockAction struct {
 	Value                string               `json:"value"`
 	ActionTs             string               `json:"action_ts"`
 	SelectedOptions      []*OptionBlockObject `json:"selected_options"`
+	SelectedOption       OptionBlockObject    `json:"selected_option"`
 	SelectedUser         string               `json:"selected_user"`
 	SelectedChannel      string               `json:"selected_channel"`
 	SelectedConversation string               `json:"selected_conversation"`
