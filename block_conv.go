@@ -2,7 +2,6 @@ package slack
 
 import (
 	"encoding/json"
-
 	"github.com/pkg/errors"
 )
 
@@ -62,6 +61,9 @@ func (b *Blocks) UnmarshalJSON(data []byte) error {
 			block = &SectionBlock{}
 		case "input":
 			block = &InputBlock{}
+		case "rich_text":
+			// for now ignore the (complex) content of rich_text blocks until we can fully support it
+			continue
 		default:
 			return errors.New("unsupported block type")
 		}
