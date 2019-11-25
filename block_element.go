@@ -253,11 +253,12 @@ func (s InputBlockElement) ElementType() MessageElementType {
 	return MessageElementType(s.Type)
 }
 
-func NewInputBlockElement(actionId string, multiline bool) *InputBlockElement {
+func NewInputBlockElement(actionId string, multiline bool, placeholder *TextBlockObject ) *InputBlockElement {
 	return &InputBlockElement{
 		Type:      METInput,
 		ActionID:  actionId,
 		Multiline: multiline,
+		Placeholder: placeholder,
 	}
 
 }
